@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Animated, ART, StyleSheet, Text, View } from 'react-native';
 
 import Arc from './Shapes/Arc';
+import Circle from './Shapes/Circle'
 import withAnimation from './withAnimation';
 
 const CIRCLE = Math.PI * 2;
@@ -25,7 +26,6 @@ export class ProgressCircle extends Component {
     color: PropTypes.string,
     children: PropTypes.node,
     direction: PropTypes.oneOf(['clockwise', 'counter-clockwise']),
-    fill: PropTypes.string,
     formatText: PropTypes.func,
     indeterminate: PropTypes.bool,
     progress: PropTypes.oneOfType([
@@ -41,6 +41,7 @@ export class ProgressCircle extends Component {
     thickness: PropTypes.number,
     unfilledColor: PropTypes.string,
     endAngle: PropTypes.number,
+    fill: PropTypes.string
   };
 
   static defaultProps = {
@@ -52,7 +53,7 @@ export class ProgressCircle extends Component {
     showsText: false,
     size: 40,
     thickness: 3,
-    endAngle: 0.9,
+    endAngle: 0.9
   };
 
   constructor(props, context) {
@@ -80,7 +81,6 @@ export class ProgressCircle extends Component {
       color,
       children,
       direction,
-      fill,
       formatText,
       indeterminate,
       progress,
@@ -93,6 +93,7 @@ export class ProgressCircle extends Component {
       thickness,
       unfilledColor,
       endAngle,
+      fill,
       ...restProps
     } = this.props;
 
@@ -119,6 +120,7 @@ export class ProgressCircle extends Component {
           width={size}
           height={size}
           style={{
+            zIndex: -1,
             transform: [
               {
                 rotate:
@@ -131,10 +133,17 @@ export class ProgressCircle extends Component {
               },
             ],
           }}
-        >
+        >{fill ?
+          <Circle
+                radius={(size) / 2}
+                stroke={fill}
+                strokeWidth={(size) / 2}
+            />
+        : false
+        }
+
           {unfilledColor && progressValue !== 1 ? (
             <Shape
-              fill={fill}
               radius={radius}
               offset={offset}
               startAngle={angle}
@@ -148,7 +157,6 @@ export class ProgressCircle extends Component {
           )}
           {!indeterminate ? (
             <Shape
-              fill={fill}
               radius={radius}
               offset={offset}
               startAngle={0}
@@ -185,20 +193,21 @@ export class ProgressCircle extends Component {
               borderRadius: textSize / 2,
               alignItems: 'center',
               justifyContent: 'center',
+              zIndex: 1
             }}
           >
             <Text
-              style={[
-                {
-                  color,
-                  fontSize: textSize / 4.5,
-                  fontWeight: '300',
-                },
-                textStyle,
-              ]}
-            >
-              {formatText(progressValue)}
-            </Text>
+                style={[
+                  {
+                    color,
+                    fontSize: textSize / 4.5,
+                    fontWeight: '300',
+                  },
+                  textStyle,
+                ]}
+              >
+                {formatText(progressValue)}
+              </Text>
           </View>
         ) : (
           false

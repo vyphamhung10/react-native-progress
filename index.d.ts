@@ -206,7 +206,16 @@ declare module 'react-native-progress' {
 		 * @memberof CirclePropTypes
 		 * @default butt
 		 */
-    strokeCap?: 'butt' | 'square' | 'round'
+	strokeCap?: 'butt' | 'square' | 'round'
+	
+			/**
+		 * Color of the content`.
+		 *
+		 * @type string
+		 * @memberof CirclePropTypes
+		 * @default None
+		 */
+		fill?: string
   }
 
 	/**
